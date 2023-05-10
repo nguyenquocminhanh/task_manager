@@ -1,25 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import NavigationBar from './ui/NavigationBar';
+import Auth from './pages/Auth/Auth';
+import AddTask from './pages/AddTask/AddTask';
+import WithAuth from './HOC/WithAuth';
+import AllTasks from './pages/AllTasks/AllTasks';
+import { useDispatch } from 'react-redux';
+import { fetchTasks } from './redux/actions/tasks';
+import TaskDetail from './pages/TaskDetail/TaskDetail';
 
-function App() {
+const App: React.FC = props => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTasks());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavigationBar/>
+
+      <Routes>
+        <Route 
+          path='/'
+          element={<Navigate to="/all-tasks" replace/>}/>
+
+        <Route 
+          path='/auth'
+          element={<Auth/>}/>
+    
+        <Route 
+          path='/add-task' 
+          element={<WithAuth>
+            <AddTask/>
+          </WithAuth>}/>
+
+        <Route 
+          path='/all-tasks' 
+          element={<WithAuth>
+            <AllTasks/>
+          </WithAuth>}/>
+
+        <Route 
+        path='/task/:taskId' 
+        element={<WithAuth>
+          <TaskDetail/>
+        </WithAuth>}/>
+      </Routes>
+    </>
   );
 }
 
