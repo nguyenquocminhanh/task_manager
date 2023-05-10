@@ -54,7 +54,6 @@ const AllTasks: React.FC = props => {
 
         setTaskName(taskName);
         setTaskComplete(taskComplete);
-        console.log(taskComplete);
     }
 
     const onCheckHandler = (event: React.FormEvent, taskName: string, taskId: string, taskComplete: boolean) => {
