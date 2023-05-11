@@ -47,13 +47,13 @@ margin: 8px 0;
     
 @media only screen and (max-width: 1200px) {
     .task {
-        flex-basis: calc(33.33% - 20px);
-        max-width: calc(33.33% - 20px);
+        flex-basis: calc(50% - 20px);
+        max-width: calc(50% - 20px);
         margin: 10px;
     }
 }
 
-@media only screen and (max-width: 1050px) {
+@media only screen and (max-width: 650px) {
     .task {
         flex-basis: 100%;
         max-width: 100%;
