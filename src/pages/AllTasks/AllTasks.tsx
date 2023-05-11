@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteTask, fetchTasks, updateTaskCompleted } from '../../redux/actions/tasks';
 import { useNavigate } from 'react-router-dom';
 import { FaTrash, FaCheck, FaTimes } from 'react-icons/fa';
-import { Button } from 'react-bootstrap';
+import { Button, ToastContainer } from 'react-bootstrap';
 import AppModal from '../../ui/Modal';
 import axios from 'axios';
 import { truncate } from '../../utils/truncate';
-import { showToast } from '../../redux/actions/toaser';
-import { convertTime } from '../../utils/converTime';
+import { formatDate } from '../../utils/formateDate';
+import { toast } from 'react-toastify';
 
 export interface Task {
     id: string,
@@ -90,11 +90,11 @@ const AllTasks: React.FC = props => {
                     setIsModalShow(false);
                     dispatch(deleteTask(taskId));
                     console.log(response.data.message);
-                    dispatch(showToast('success', response.data.message))
+                    toast.success(response.data.message);
                 }
             } catch (error: any) {
                 console.log(error);
-                dispatch(showToast('error', error.response.data));
+                toast.error(error.response.data);
             }
         } else {        // PUT
             try {
@@ -111,11 +111,11 @@ const AllTasks: React.FC = props => {
                 if (response.status === 200) {    // UPDATE success
                     setIsModalShow(false);
                     dispatch(updateTaskCompleted(taskId, taskComplete));
-                    dispatch(showToast('success', response.data.message));
+                    toast.success(response.data.message);
                 }
             } catch (error: any) {
                 console.log(error);
-                dispatch(showToast('error', error.response.data));
+                toast.error(error.response.data);
             }
         }
     }
@@ -139,7 +139,7 @@ const AllTasks: React.FC = props => {
                     <p>{truncate(task.description)}</p>
                     <div className={classes.details}>
                         <div>
-                            <span>Due Date:</span> {convertTime(task.dueDate)}
+                            <span>Due Date:</span> {formatDate(task.dueDate)}
                         </div>
                         <div>
                             {/* <span>Status: </span> */}
@@ -155,6 +155,8 @@ const AllTasks: React.FC = props => {
                 taskName={taskName}
                 onHandleClose={() => setIsModalShow(false)}
                 onConfirm={onConfirmHandler}/>
+
+            <ToastContainer />
         </div>
     );
 };
