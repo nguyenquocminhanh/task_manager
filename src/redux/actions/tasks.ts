@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { showToast } from './toaser';
 
 export const fetchTasksRequest = () => {
   return {
@@ -95,9 +96,10 @@ export const fetchTaskDetail = (taskId: any): any => async (dispatch: any, getSt
             type: 'FETCH_TASK_DETAIL_FROM_SERVER',
             payload: task
           });
-      }
+      } 
     } catch (error: any) {
-      const errorMessage = error.message;
+      const errorMessage = error.response.data;
+      dispatch(showToast('error', errorMessage));
       dispatch({
         type: 'FETCH_TASK_DETAIL_DROM_SERVER_FAILURE',
         payload: errorMessage

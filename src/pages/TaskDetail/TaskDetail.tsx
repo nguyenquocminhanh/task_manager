@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateTaskInfo, fetchTaskDetail } from "../../redux/actions/tasks";
 import { useNavigate, useParams } from "react-router-dom";
 import { Task } from "../AllTasks/AllTasks";
+import { showToast } from "../../redux/actions/toaser";
 
 export interface RootState {
     tasks: {
@@ -65,6 +66,7 @@ const TaskDetail: React.FC = props => {
         if (response.status === 200) {
             // update task to redux store
             dispatch(updateTaskInfo(taskId, titleInputRef.current?.value, descriptionInputRef.current?.value, dueDateInputRef.current?.value));
+            dispatch(showToast('success', response.data.message));
             navigate('/all-tasks');
         }
       } catch (error) {

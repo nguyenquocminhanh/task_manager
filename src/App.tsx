@@ -8,6 +8,7 @@ import AllTasks from './pages/AllTasks/AllTasks';
 import { useDispatch } from 'react-redux';
 import { fetchTasks } from './redux/actions/tasks';
 import TaskDetail from './pages/TaskDetail/TaskDetail';
+import Toaster from './ui/Toaster';
 
 const App: React.FC = props => {
   const dispatch = useDispatch();
@@ -48,6 +49,8 @@ const App: React.FC = props => {
           <TaskDetail/>
         </WithAuth>}/>
       </Routes>
+
+      <Toaster/>
     </>
   );
 }

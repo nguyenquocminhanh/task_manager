@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addTasks } from "../../redux/actions/tasks";
 import { useNavigate } from "react-router-dom";
+import { showToast } from "../../redux/actions/toaser";
 
 const AddTask: React.FC = props => {
     const titleInputRef = useRef<HTMLInputElement>(null);
@@ -34,6 +35,7 @@ const AddTask: React.FC = props => {
             const task = response.data.task;
             // add task to redux store
             dispatch(addTasks(task));
+            dispatch(showToast('success', response.data.message))
             navigate('/all-tasks');
         }
       } catch (error) {

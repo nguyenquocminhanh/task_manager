@@ -8,7 +8,7 @@ import { Button } from 'react-bootstrap';
 import AppModal from '../../ui/Modal';
 import axios from 'axios';
 import { truncate } from '../../utils/truncate';
-
+import { showToast } from '../../redux/actions/toaser';
 
 export interface Task {
     id: string,
@@ -21,7 +21,11 @@ export interface Task {
 export interface RootState {
     tasks: {
         tasks: Task[]
-    };
+    },
+    toaster: {
+        toastMessage: string,
+        toastType: string
+    }
 }
 
 const AllTasks: React.FC = props => {
@@ -81,12 +85,15 @@ const AllTasks: React.FC = props => {
                     }  
                 });
         
-                if (response.status === 204) {    // delete success
+                if (response.status === 200) {    // delete success
                     setIsModalShow(false);
                     dispatch(deleteTask(taskId));
+                    console.log(response.data.message);
+                    dispatch(showToast('success', response.data.message))
                 }
-            } catch (error) {
+            } catch (error: any) {
                 console.log(error);
+                dispatch(showToast('error', error.response.data));
             }
         } else {        // PUT
             try {
@@ -103,9 +110,11 @@ const AllTasks: React.FC = props => {
                 if (response.status === 200) {    // UPDATE success
                     setIsModalShow(false);
                     dispatch(updateTaskCompleted(taskId, taskComplete));
+                    dispatch(showToast('success', response.data.message));
                 }
-            } catch (error) {
+            } catch (error: any) {
                 console.log(error);
+                dispatch(showToast('error', error.response.data));
             }
         }
     }

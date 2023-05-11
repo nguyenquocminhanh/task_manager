@@ -2,8 +2,10 @@ import React, { useContext, useRef, useState } from "react";
 import { Form, Button } from 'react-bootstrap';
 import classes from './Auth.module.css';
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
+import { useDispatch } from "react-redux";
+import { showToast } from "../../redux/actions/toaser";
 
 const Auth: React.FC = props => {
     const [isLoginMode, setIsLoginMode] = useState(true);
@@ -12,6 +14,7 @@ const Auth: React.FC = props => {
     const emailInputRef = useRef<HTMLInputElement>(null);
     const nameInputRef = useRef<HTMLInputElement>(null);
     const passwordInputRef = useRef<HTMLInputElement>(null);
+    const dispatch = useDispatch();
 
     const switchModeHandler = () => {
       setIsLoginMode((prevState) => !prevState);
@@ -32,19 +35,23 @@ const Auth: React.FC = props => {
         if (response.status === 200 && isLoginMode) {       // sign in
             setToken(response.data.token);
             localStorage.setItem('token', response.data.token);
+            dispatch(showToast('info', `Hello ${response.data.user.name}!`));
             navigate('/all-tasks');
         } else if (response.status === 200 && !isLoginMode) {    // sign up
             switchModeHandler();
+            dispatch(showToast('success', 'Account created'));
         }
 
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
-      }
+        // toast.error(error.response.data);
+        dispatch(showToast('error', error.response.data));
+      }      
+    }  
 
-      
-    };
-
-    
+    if (localStorage.getItem('token')) {
+        return <Navigate to="/all-tasks"/>;
+    }
 
     return (
         <div className={classes.AuthContainer}>
