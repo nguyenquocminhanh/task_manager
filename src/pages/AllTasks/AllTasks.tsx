@@ -9,6 +9,7 @@ import AppModal from '../../ui/Modal';
 import axios from 'axios';
 import { truncate } from '../../utils/truncate';
 import { showToast } from '../../redux/actions/toaser';
+import { convertTime } from '../../utils/converTime';
 
 export interface Task {
     id: string,
@@ -138,7 +139,7 @@ const AllTasks: React.FC = props => {
                     <p>{truncate(task.description)}</p>
                     <div className={classes.details}>
                         <div>
-                            <span>Due Date:</span> {task.dueDate}
+                            <span>Due Date:</span> {convertTime(task.dueDate)}
                         </div>
                         <div>
                             {/* <span>Status: </span> */}
