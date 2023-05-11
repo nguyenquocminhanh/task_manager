@@ -122,7 +122,7 @@ const AllTasks: React.FC = props => {
     return (
         <div className={classes.taskList}>
             {allTasks.map(task => (
-                <div style={{background: task.completed ? '#CFF1C5' : ( task.dueDate < new Date().toISOString().split('T')[0] ? '#FFB5D1' : 'D7E6FA' )}} className={classes.task} key={task.id} onClick={() => navigate(`/task/${task.id}`)}>
+                <div style={{background: task.completed ? '#CFF1C5' : ( task.dueDate < new Date().toISOString().split('T')[0] ? '#FFB5D1' : '#D7E6FA' )}} className={classes.task} key={task.id} onClick={() => navigate(`/task/${task.id}`)}>
                     <h4>{task.title}</h4>
 
                     <div className={classes.CheckTrash}>
