@@ -39,7 +39,7 @@ const Auth: React.FC = props => {
             navigate('/all-tasks');
         } else if (response.status === 200 && !isLoginMode) {    // sign up
             switchModeHandler();
-            dispatch(showToast('success', 'Account created'));
+            dispatch(showToast('info', 'Account created'));
         }
 
       } catch (error: any) {
