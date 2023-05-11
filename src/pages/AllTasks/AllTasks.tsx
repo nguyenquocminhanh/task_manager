@@ -122,15 +122,15 @@ const AllTasks: React.FC = props => {
     return (
         <div className={classes.taskList}>
             {allTasks.map(task => (
-                <div style={{background: task.completed ? '#CFF1C5' : '#FFB5D1'}} className={classes.task} key={task.id} onClick={() => navigate(`/task/${task.id}`)}>
+                <div style={{background: task.completed ? '#CFF1C5' : ( task.dueDate < new Date().toISOString().split('T')[0] ? '#FFB5D1' : 'D7E6FA' )}} className={classes.task} key={task.id} onClick={() => navigate(`/task/${task.id}`)}>
                     <h4>{task.title}</h4>
 
                     <div className={classes.CheckTrash}>
-                        <Button onClick={(e) => onCheckHandler(e, task.title, task.id, task.completed)} variant="outline-dark" size="sm" className="d-flex align-items-center">
+                        <Button onClick={(e) => onCheckHandler(e, task.title, task.id, task.completed)} variant="outline-dark" size="sm" >
                             {task.completed ? <FaTimes/> : <FaCheck />}
                         </Button> 
-                        &nbsp;
-                        <Button onClick={(e) => onDeleteHandler(e, task.title, task.id, task.completed)} variant="outline-dark" size="sm" className="d-flex align-items-center">
+                        &nbsp;&nbsp;
+                        <Button onClick={(e) => onDeleteHandler(e, task.title, task.id, task.completed)} variant="outline-dark" size="sm" >
                             <FaTrash />
                         </Button>
                     </div>
@@ -142,7 +142,7 @@ const AllTasks: React.FC = props => {
                         </div>
                         <div>
                             {/* <span>Status: </span> */}
-                            <span>{task.completed ? 'Completed' : 'Incomplete'}</span>
+                            <span>{task.completed ? 'Completed' : (task.dueDate < new Date().toISOString().split('T')[0] ? 'Overdue' : 'Incomplete')}</span>
                         </div>
                     </div>
                 </div>
