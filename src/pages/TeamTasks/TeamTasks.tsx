@@ -81,11 +81,7 @@ const TeamTasks: React.FC = props => {
             } 
         }
 
-        const socket = io(`https://task-manager-server-minh-nguyen.vercel.app`, {
-            withCredentials: true,
-            extraHeaders: {
-                "Authorization": `Bearer ${token}`
-            },
+        const socket = io(`${process.env.REACT_APP_SERVER_URL}`, {
             auth: { token: localStorage.getItem('token')},
         });
 
