@@ -128,7 +128,7 @@ const TeamTasks: React.FC = props => {
 
             // getout
             socket.on('getout', () => {
-                dispatch(showToast('info', 'Task Not Found'));
+                dispatch(showToast('info', 'Team Not Found'));
                 navigate('/all-teams');
             })
 
