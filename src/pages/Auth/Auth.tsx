@@ -41,7 +41,7 @@ const Auth: React.FC = props => {
         }
 
       } catch (error: any) {
-        console.log(error);
+        // console.log(error);
         toast.error(error.response.data);
       }      
     }  
