@@ -58,6 +58,8 @@ const TeamTasks: React.FC = props => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [socket, setSocket] = useState<any>(null);
     const [userId, setUserId] = useState<string | null>(null);
+    // Keep track of the last received message ID
+    const lastReceivedMessageIdRef = useRef('');
 
     useEffect(() => {
         // scroll to bottom
@@ -132,7 +134,10 @@ const TeamTasks: React.FC = props => {
 
             // receive message
             socket.on('messageResponse', (messageData: Message) => {
-                setMessages((prevMessages: Message[]) => [...prevMessages, messageData]);
+                if (messageData.id.toString() !== lastReceivedMessageIdRef.current) {
+                    setMessages((prevMessages: Message[]) => [...prevMessages, messageData]);
+                    lastReceivedMessageIdRef.current = messageData.id.toString();
+                }
             });
             
             // Listen for the 'onlineUsers' event from the server
