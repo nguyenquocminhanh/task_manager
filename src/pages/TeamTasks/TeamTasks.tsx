@@ -82,6 +82,10 @@ const TeamTasks: React.FC = props => {
         }
 
         const socket = io(`${process.env.REACT_APP_SERVER_URL}`, {
+            withCredentials: true,
+            extraHeaders: {
+              "my-custom-header": "abcd"
+            },
             auth: { token: localStorage.getItem('token')},
         });
 
