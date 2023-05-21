@@ -82,7 +82,7 @@ const TeamTasks: React.FC = props => {
         }
 
         const socket = io(`${process.env.REACT_APP_SERVER_URL}`, {
-            transports : ['websocket'],
+            transports: ['websocket', 'polling', 'flashsocket'],
             auth: { token: localStorage.getItem('token')},
         });
 
