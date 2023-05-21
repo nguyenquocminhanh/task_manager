@@ -8,7 +8,7 @@ h2 {
 }
 
 .ChatComponent {
-    height: calc(100vh - 130px);
+    height: calc(100vh - 150px);
     /* overflow-y: auto; */
     /* background-color: lightslategray; */
     flex: 40%;
