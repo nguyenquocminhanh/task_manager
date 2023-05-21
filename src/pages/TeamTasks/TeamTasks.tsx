@@ -31,7 +31,8 @@ interface Message {
         name: string
     },
     createdAt: string,
-    team_id: string
+    team_id: string,
+    isnotification: boolean
 }
 
 interface ActiveMember {
@@ -348,7 +349,11 @@ const TeamTasks: React.FC = props => {
 
                     {/* Chat Messages */}
                     <div className={classes.chatMessages} ref={chatMessagesRef}>
-                        {messages.map((message : Message, i: number) => (
+                        {messages.map((message : Message, i: number) => message.isnotification === true ? 
+                            <div className={classes.MessageStatus}>
+                                <p>{message.content}{message.content.includes('joined') ? ' 🎉' : ' 🛫'}</p> 
+                            </div> 
+                            : (
                             <div className={`${classes.messageContent} ${message.user_id === userId ? classes.send : classes.receive}`} key={message.id}>
                                 <span className={classes.sender} style={{color: message.user_id === userId? 'blue' : '#212529'}}>{message.sender.name}</span>
                                 <span className={classes.messageTime}>{formatDateTime(message.createdAt)}</span>
@@ -362,6 +367,11 @@ const TeamTasks: React.FC = props => {
                                 </div> : null }
                             </div>
                         ))}
+
+
+                        <div className="message__status">
+                        {/* <p>{typingStatus}</p> */}
+                        </div>
 
                         {/* <div ref={lastMessageRef} /> */}
                     </div>

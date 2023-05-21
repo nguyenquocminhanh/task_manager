@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { showToast } from './toaser';
 
 export const fetchTeamsRequest = () => {
   return {
@@ -30,7 +31,7 @@ export const fetchTeamsFromStore = (teams: any) => {
 export const fetchTeams = (): any => {
     const token = localStorage.getItem('token');
 
-    return async (dispatch: any, getState: any) => {
+    return async (dispatch: any) => {
         try {
             dispatch(fetchTeamsRequest());
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/teams`, {
@@ -68,5 +69,33 @@ export const deleteTeam = (teamId: any) => {
   return {
     type: 'DELETE_TEAM',
     payload: teamId
+  };
+};
+
+export const askToLeaveTeam = (userId: any, teamId: any): any => {
+  const token = localStorage.getItem('token');
+
+  return async (dispatch: any) => {
+      try {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/teams/ask-to-leave?teamId=${teamId}&userId=${userId}`, {
+              headers: {
+                  Authorization: `Bearer ${token}`
+              }  
+          });
+
+          if (response.status === 200) {
+              dispatch(fetchTeams());
+              dispatch(showToast('success', response.data.message));
+          }
+      } catch (error: any) {
+          console.log(error.message);
+      }
+  };
+};
+
+export const askToLeaveSuccess = (teams: any) => {
+  return {
+    type: 'ASK_TO_LEAVE_SUCCESS',
+    payload: teams,
   };
 };

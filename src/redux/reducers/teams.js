@@ -45,6 +45,11 @@ const teamsReducer = (state = initialState, action) => {
             ...state,
             teams: updatedTeams
         };
+      case 'ASK_TO_LEAVE_SUCCESS':
+        return {
+          ...state,
+          teams: action.payload,
+        };
       default:
         return state;
     }

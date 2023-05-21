@@ -20,7 +20,6 @@ h2 {
 
 }
 
-
 .TeamMembers {
     display: flex;
     justify-content: center;
@@ -220,6 +219,20 @@ margin: 8px 0;
   
 .chatInput button {
     padding: 5px 10px;
+}
+
+.MessageStatus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 0;
+}
+
+.MessageStatus p {
+    text-align: center;
+    margin: 0;
+    font-style: italic;
+    font-size: 13px;
 }
   
 @media only screen and (max-width: 1200px) {
