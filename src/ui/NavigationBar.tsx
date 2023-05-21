@@ -12,7 +12,7 @@ const NavigationBar: React.FC = props => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const tasks = useSelector((state: RootState)=> state.tasks.tasks);
+  const tasks = useSelector((state: RootState)=> state.tasks.tasks).filter(task => task.team_id === null);
 
   const handleLogout = () => {
     // remove token from local storage and set authentication status to false
@@ -34,7 +34,13 @@ const NavigationBar: React.FC = props => {
           <Nav className="me-auto">
 
           {token ? 
-            <Nav.Link as={Link} to="/all-tasks" active={window.location.pathname.includes('all-task') ? true : false}>All Tasks{`(${tasks.length})`}</Nav.Link>
+            <Nav.Link as={Link} to="/all-tasks" active={window.location.pathname.includes('all-task') ? true : false}>Personal Tasks{`(${tasks.length})`}</Nav.Link>
+          : 
+            null
+          }
+
+          {token ? 
+            <Nav.Link as={Link} to="/all-teams" active={window.location.pathname.includes('all-teams') ? true : false}>Team Tasks</Nav.Link>
           : 
             null
           }

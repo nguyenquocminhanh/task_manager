@@ -21,6 +21,7 @@ const TaskDetail: React.FC = props => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { taskId } = useParams();
+    const [teamId, setTeamId] = useState<null | number>(null);
 
     const task = useSelector((state: RootState) => state.tasks.task);
 
@@ -44,6 +45,7 @@ const TaskDetail: React.FC = props => {
             description: task? task.description : '',
             dueDate: task? task.dueDate: ''
         });
+        setTeamId(task? task.team_id : null);
     }, [task]);
   
     const submitHandler = async (event: React.FormEvent) => {
@@ -56,6 +58,7 @@ const TaskDetail: React.FC = props => {
         const response = await axios.put(`${process.env.REACT_APP_API_URL}/tasks/${taskId}`, {
             title: titleInputRef.current?.value,
             description: descriptionInputRef.current?.value,
+            teamId: teamId,
             dueDate: dueDateInputRef.current?.value,   
         }, {
             headers: {
@@ -67,7 +70,7 @@ const TaskDetail: React.FC = props => {
             // update task to redux store
             dispatch(updateTaskInfo(taskId, titleInputRef.current?.value, descriptionInputRef.current?.value, dueDateInputRef.current?.value));
             dispatch(showToast('success', response.data.message));
-            navigate('/all-tasks');
+            navigate(-1);       // go back to previous page
         }
       } catch (error) {
         console.log(error);
@@ -88,8 +91,7 @@ const TaskDetail: React.FC = props => {
                     <Form.Label>Task Description</Form.Label>
                     <Form.Control required as="textarea" rows={4} ref={descriptionInputRef} defaultValue={formState.description}/>
                 </Form.Group>
-           
-
+        
                 <Form.Group controlId="formBasicDueDate" className="mb-3">
                     <Form.Label>Due Date</Form.Label>
                     <Form.Control required type="date" min={new Date().toISOString().split('T')[0]} ref={dueDateInputRef} defaultValue={formState.dueDate}/>

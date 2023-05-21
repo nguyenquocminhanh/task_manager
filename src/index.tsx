@@ -18,6 +18,7 @@ root.render(
   <Provider store={store}>
     {/* store token - react-context */}
     <AuthProvider>    
+      {/* Routes */}
       <BrowserRouter>
         <App />
       </BrowserRouter>

@@ -1,15 +1,10 @@
-h2 {
-    text-align: center;
-    padding-top: 10px;
-}
-
 .taskList {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
   }
   
-.task {
+.task, .join {
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 16px;
@@ -18,6 +13,18 @@ h2 {
     cursor: pointer;
     position: relative;
     margin: 10px;
+}
+
+.join {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: lightgray;
+}
+
+.join p {
+    margin: 0;
 }
 
 .task:hover {
@@ -31,11 +38,13 @@ h2 {
     cursor: auto !important;
 }
   
-.task h4 {
+.task h4,
+.join h4 {
     margin: 0;
 }
   
-.task p {
+.task p,
+.join p {
 margin: 8px 0;
 }
   
@@ -51,7 +60,8 @@ margin: 8px 0;
 }
     
 @media only screen and (max-width: 1200px) {
-    .task {
+    .task,
+    .join {
         flex-basis: calc(50% - 20px);
         max-width: calc(50% - 20px);
         margin: 10px;
@@ -59,7 +69,8 @@ margin: 8px 0;
 }
 
 @media only screen and (max-width: 650px) {
-    .task {
+    .task,
+    .join {
         flex-basis: 100%;
         max-width: 100%;
         margin: 10px;

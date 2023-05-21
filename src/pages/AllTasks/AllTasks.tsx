@@ -10,22 +10,31 @@ import axios from 'axios';
 import { truncate } from '../../utils/truncate';
 import { formatDate } from '../../utils/formateDate';
 import { toast } from 'react-toastify';
+import { Team } from '../AllTeams/AllTeams';
 
 export interface Task {
     id: string,
     title: string,
     description: string,
     dueDate: string,
+    team_id: null | number,
+    creator: {
+        name: string
+    }
     completed: boolean,
 }
 
 export interface RootState {
     tasks: {
-        tasks: Task[]
+        tasks: Task[],
+        error: any
     },
     toaster: {
         toastMessage: string,
         toastType: string
+    },
+    teams: {
+        teams: Team[]
     }
 }
 
@@ -80,7 +89,9 @@ const AllTasks: React.FC = props => {
         const token = localStorage.getItem('token');
         if (action === 'Delete') {
             try {
-                const response = await axios.delete(`${process.env.REACT_APP_API_URL}/tasks/${taskId}`, {
+                const response = await axios.delete(`${process.env.REACT_APP_API_URL}/tasks/${taskId}`, 
+                { 
+                    data: { teamId: null },
                     headers: {
                         Authorization: `Bearer ${token}`
                     }  
@@ -121,43 +132,46 @@ const AllTasks: React.FC = props => {
     }
 
     return (
-        <div className={classes.taskList}>
-            {allTasks.map(task => (
-                <div style={{background: task.completed ? '#CFF1C5' : ( task.dueDate < new Date().toISOString().split('T')[0] ? '#FFB5D1' : '#D7E6FA' )}} className={classes.task} key={task.id} onClick={() => navigate(`/task/${task.id}`)}>
-                    <h4>{task.title}</h4>
+        <>
+            <h2>{`All personal tasks`}</h2>
+            <div className={classes.taskList}>
+                {allTasks.filter(task => task.team_id === null).map(task => (
+                    <div style={{background: task.completed ? '#CFF1C5' : ( task.dueDate < new Date().toISOString().split('T')[0] ? '#FFB5D1' : '#D7E6FA' )}} className={classes.task} key={task.id} onClick={() => navigate(`/task/${task.id}`)}>
+                        <h4>{task.title}</h4>
 
-                    <div className={classes.CheckTrash}>
-                        <Button onClick={(e) => onCheckHandler(e, task.title, task.id, task.completed)} variant="outline-dark" size="sm" >
-                            {task.completed ? <FaTimes/> : <FaCheck />}
-                        </Button> 
-                        &nbsp;&nbsp;
-                        <Button onClick={(e) => onDeleteHandler(e, task.title, task.id, task.completed)} variant="outline-dark" size="sm" >
-                            <FaTrash />
-                        </Button>
-                    </div>
-
-                    <p>{truncate(task.description)}</p>
-                    <div className={classes.details}>
-                        <div>
-                            <span>Due Date:</span> {formatDate(task.dueDate)}
+                        <div className={classes.CheckTrash}>
+                            <Button onClick={(e) => onCheckHandler(e, task.title, task.id, task.completed)} variant="outline-dark" size="sm" >
+                                {task.completed ? <FaTimes/> : <FaCheck />}
+                            </Button> 
+                            &nbsp;&nbsp;
+                            <Button onClick={(e) => onDeleteHandler(e, task.title, task.id, task.completed)} variant="outline-dark" size="sm" >
+                                <FaTrash />
+                            </Button>
                         </div>
-                        <div>
-                            {/* <span>Status: </span> */}
-                            <span>{task.completed ? 'Completed' : (task.dueDate < new Date().toISOString().split('T')[0] ? 'Overdue' : 'Incomplete')}</span>
+
+                        <p>{truncate(task.description)}</p>
+                        <div className={classes.details}>
+                            <div>
+                                <span>Due Date:</span> {formatDate(task.dueDate)}
+                            </div>
+                            <div>
+                                {/* <span>Status: </span> */}
+                                <span>{task.completed ? 'Completed' : (task.dueDate < new Date().toISOString().split('T')[0] ? 'Overdue' : 'Incomplete')}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            ))}
+                ))}
 
-            <AppModal 
-                isModalShow={isModalShow}
-                action={action}
-                taskName={taskName}
-                onHandleClose={() => setIsModalShow(false)}
-                onConfirm={onConfirmHandler}/>
+                <AppModal 
+                    isModalShow={isModalShow}
+                    action={action}
+                    taskName={taskName}
+                    onHandleClose={() => setIsModalShow(false)}
+                    onConfirm={onConfirmHandler}/>
 
-            <ToastContainer />
-        </div>
+                <ToastContainer />
+            </div>
+        </>
     );
 };
 
